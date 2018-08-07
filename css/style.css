@@ -1,6 +1,22 @@
 header{
-	text-align: center;
-	margin: 16px;
-	color: #6f42c1;
-	font-family: Roboto;
+  text-align: center;
+  margin: 16px;
+  color: #6f42c1;
+  font-family: Roboto;
+}
+
+.score-panel{
+  text-align: center;
+  vertical-align: center;
+}
+
+.stars{
+  padding: 0;
+  list-style-type: none;
+  display: inline-flex;
+}
+
+.moves{
+  font-size: 1.4em;
+  margin: 0 48px 0 8px;
 }
