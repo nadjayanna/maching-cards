@@ -31,6 +31,6 @@ $('.cards').on( 'click', 'li', function(e) {
 	$(icon).toggleClass('icon-clicked');
 	$(icon).toggleClass('icon');
 	//change the card aspect
-	$(this).toggleClass('card');
-	$(this).toggleClass('card-clicked');
+	$(this).toggleClass('hide');
+	$(this).toggleClass('clicked');
 });
