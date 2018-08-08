@@ -80,13 +80,13 @@ function starsHandler(){
   const starsIcons = $('.stars').find('i');
 
   switch (moves) {
-    case 3:
+    case 12:
       $(starsIcons[2]).toggleClass('fas far');
       break;
-    case 5:
+    case 16:
       $(starsIcons[1]).toggleClass('fas far');
       break;
-    case 7:
+    case 20:
       $(starsIcons[0]).toggleClass('fas far');
       break;
   }
