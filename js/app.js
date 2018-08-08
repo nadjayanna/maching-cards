@@ -22,8 +22,7 @@ function allocateImages (){
     iconsList.splice(index,1);
   });
 
-  $('.cards').off('click');
-
+  $('.cards').off('click', 'li', clickCardsHandler);
   /** add click listener to the cards **/
   $('.cards').on('click', 'li', clickCardsHandler);
 }
@@ -94,31 +93,40 @@ let moves;
 
 /** Function to handler the cards click event**/
 var clickCardsHandler = function (event){
-  event.stopPropagation();
-  //select the elemente where the icon will be display
-  const icon = event.currentTarget.childNodes[0];
-  //make the icon show
-  $(icon).toggleClass('icon-clicked icon');
-  //change the card aspect
-  $(this).toggleClass('hide clicked');
+  
+  //not allow to flip the card that was alredy flipped
+  if($(this).hasClass('hide')){
+    event.stopPropagation();
+  
+    //select the elemente where the icon will be display
+    const icon = event.target.childNodes[0];
 
-  const clicked = $('.clicked');
-  if(clicked.length == 2){
+    //make the icon show
+    $(icon).toggleClass('icon-clicked icon');
 
-    //dont allow clicks while evaluating if there is a match
-    $('.cards').off('click');
-
-    moves++;
-    
-    starsHandler();
-
-    matchTimeOut = setTimeout(function() { 
-      isMatch(clicked);
-      //enable cards click
-      $('.cards').on('click', 'li', clickCardsHandler);
-    }, 1000);
+    //change the card aspect
+    $(this).toggleClass('hide clicked');
+  
+    const clicked = $('.clicked');
+    console.log(this);
+    console.log(event);
+  
+    if(clicked.length == 2){
+  
+      //dont allow clicks while evaluating if there is a match
+      $('.cards').off('click', 'li', clickCardsHandler);
+  
+      moves++;
+      
+      starsHandler();
+  
+      matchTimeOut = setTimeout(function() { 
+        isMatch(clicked);
+        //enable cards click
+        $('.cards').on('click', 'li', clickCardsHandler);
+      }, 1000);
+    }
   }
-
 }
 
 allocateImages();
