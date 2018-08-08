@@ -31,11 +31,11 @@ ul{
   margin: 16px 0 16px 0;
 }
 
-.play-card{
+.card{
   margin: 8px;
   padding: 4px;
   font-size: 40px;
-  background: blue;
+  background: #2e3d49;
   color: white;
   border-radius: 8px;
   display: inline-block;
@@ -43,16 +43,28 @@ ul{
   vertical-align: middle;
 }
 
-/* Small devices (tablets, 768px and up) */
-@media (min-width: @screen-sm-min) {
-  .play-card{
-    font-size: 72px;
-    padding: 8px;
-  }
+.card-clicked{
+  margin: 8px;
+  padding: 4px;
+  font-size: 40px;
+  background: #02b3e4;
+  color: white;
+  border-radius: 8px;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.icon::before{
+  display: none;
+}
+
+.icon-clicked{
+  display: block;
 }
 
 @media screen and (min-width: 768px) {
-    .play-card{
+  .play-card{
     font-size: 72px;
     padding: 8px;
   }
