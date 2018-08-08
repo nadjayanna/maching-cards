@@ -23,12 +23,12 @@ ul{
 }
 
 #game{
-  display: block;
+  display: none;
 }
 
 .score-panel{
   text-align: center;
-  vertical-align: center;
+  font-size: 1.4em;
 }
 
 .stars{
@@ -36,7 +36,6 @@ ul{
 }
 
 .moves{
-  font-size: 1.4em;
   margin: 0 48px 0 8px;
 }
 
@@ -83,7 +82,7 @@ ul{
   text-align: center;
   padding-top: 16px;
   padding-bottom: 16px;
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
 }
@@ -105,9 +104,57 @@ ul{
   color: #686872;
 }
 
-@media screen and (min-width: 768px) {
-  .play-card{
+/** Desktop **/
+@media screen and (min-width: 1281px){
+
+  .score-panel{
+    font-size: 1.6em;
+    margin: 8px;
+  }
+
+  .cards{
+    margin: auto;
+    padding: 16px;
+    max-width: 640px;
+  }
+  .card{
+    font-size: 36px;
+    padding: 16px;
+  }
+}
+
+/** IPAD **/
+@media screen and (min-width: 768px) and (max-width: 1280px){
+
+  header{
+    margin: 48px;
+  }
+
+  h1{
+    font-size: 3em;
+  }
+
+  .score-panel{
+    font-size: 2em;
+  }
+
+  .cards{
+    margin: 48px 16px 48px 16px;
+    padding: 16px;
+  }
+  .card{
     font-size: 72px;
-    padding: 8px;
+    padding: 16px;
+  }
+}
+
+/** Nexus5 **/
+@media screen and (max-width: 640px) and (orientation: landscape) {
+  .cards{
+    margin: 16px;
+  }
+  .card{
+    font-size: 36px;
+    margin: 8px 16px 8px 16px;
   }
 }
