@@ -1,3 +1,8 @@
+//var declaration
+let matchTimeOut;
+let moves;
+let clickCardsHandler;
+
 /** Function that will allocate randonly the icons into the cards**/
 function allocateImages (){
   
@@ -87,12 +92,25 @@ function starsHandler(){
   }
 }
 
-var matchTimeOut;
+function reload(){
 
-let moves;
+  //adjust all cards classes so they comeback to hidden
+  const cards = $(".cards").find("li");
+  $(cards).removeClass();
+  $(cards).toggleClass('card col hide');
+
+  //sort the images
+  allocateImages();  
+}
+
+function playAgain(){
+  $('#game').css('display', 'block');
+  $('#win').css('display', 'none');
+  reload();
+}
 
 /** Function to handler the cards click event**/
-var clickCardsHandler = function (event){
+clickCardsHandler = function (event){
   
   //not allow to flip the card that was alredy flipped
   if($(this).hasClass('hide')){
@@ -108,8 +126,6 @@ var clickCardsHandler = function (event){
     $(this).toggleClass('hide clicked');
   
     const clicked = $('.clicked');
-    console.log(this);
-    console.log(event);
   
     if(clicked.length == 2){
   
@@ -117,30 +133,28 @@ var clickCardsHandler = function (event){
       $('.cards').off('click', 'li', clickCardsHandler);
   
       moves++;
-      
       starsHandler();
-  
+
       matchTimeOut = setTimeout(function() { 
         isMatch(clicked);
         //enable cards click
         $('.cards').on('click', 'li', clickCardsHandler);
+
+        if($('.match').length == 16){
+          $('#game').css('display', 'none');
+          $('#win').css('display', 'flex');
+          $('.congrats-moves').text(`With ${moves} Moves and ${$('.fa-star.fas').length} Stars.`);
+        }
       }, 1000);
     }
   }
 }
 
-allocateImages();
-
 /** add click listener to the reload **/
 $('#reload').on('click', function (event){
   //clear timeout for matching cards
   clearTimeout(matchTimeOut);
-
-  //adjust all cards classes so they comeback to hidden
-  const cards = $(".cards").find("li");
-  $(cards).removeClass();
-  $(cards).toggleClass('card col hide');
-
-  //sort the images
-  allocateImages();  
+  reload();
 });
+
+allocateImages();
