@@ -1,6 +1,6 @@
 /** Function that will allocate randonly the icons into the cards**/
 function allocateImages (){
-
+  
   //list of elementes where the icon will be allocate
   const icons = $(".cards").find("i");
 
@@ -21,6 +21,11 @@ function allocateImages (){
     //remove the icon that was already allocated
     iconsList.splice(index,1);
   });
+
+  $('.cards').off('click');
+
+  /** add click listener to the cards **/
+  $('.cards').on('click', 'li', clickCardsHandler);
 }
 
 /** Function to select a integer between 0 (inclusive) and max (exclusive) **/
@@ -65,7 +70,7 @@ function starsInit (){
 
 /*** Function to count the star points ***/
 function starsHandler(){
-  
+
   $('.moves').text(`${moves} Moves`);
 
   const starsIcons = $('.stars').find('i');
@@ -89,7 +94,6 @@ let moves;
 
 /** Function to handler the cards click event**/
 var clickCardsHandler = function (event){
-
   event.stopPropagation();
   //select the elemente where the icon will be display
   const icon = event.currentTarget.childNodes[0];
@@ -105,6 +109,7 @@ var clickCardsHandler = function (event){
     $('.cards').off('click');
 
     moves++;
+    
     starsHandler();
 
     matchTimeOut = setTimeout(function() { 
@@ -113,26 +118,21 @@ var clickCardsHandler = function (event){
       $('.cards').on('click', 'li', clickCardsHandler);
     }, 1000);
   }
+
 }
 
 allocateImages();
 
-/** add click listener to the cards **/
-$('.cards').on('click', 'li', clickCardsHandler);
-
 /** add click listener to the reload **/
 $('#reload').on('click', function (event){
-
   //clear timeout for matching cards
   clearTimeout(matchTimeOut);
-  //enable clicks at the cards
-  $('.cards').on('click', 'li', clickCardsHandler);
-  
+
   //adjust all cards classes so they comeback to hidden
   const cards = $(".cards").find("li");
   $(cards).removeClass();
   $(cards).toggleClass('card col hide');
 
   //sort the images
-  allocateImages();
+  allocateImages();  
 });
