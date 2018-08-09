@@ -104,8 +104,10 @@ function reload(){
 }
 
 function playAgain(){
-  $('#game').css('display', 'block');
+  $('#game').show();
   $('#win').css('display', 'none');
+  $('header').show();
+;
   reload();
 }
 
@@ -141,8 +143,9 @@ clickCardsHandler = function (event){
         $('.cards').on('click', 'li', clickCardsHandler);
 
         if($('.match').length == 16){
-          $('#game').css('display', 'none');
+          $('#game').hide();
           $('#win').css('display', 'flex');
+          $('header').hide();
           $('.congrats-moves').text(`With ${moves} Moves and ${$('.fa-star.fas').length} Stars.`);
         }
       }, 1000);
