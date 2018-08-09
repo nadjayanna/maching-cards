@@ -9,6 +9,7 @@ html,body {
   padding: 0;
   background-color: #edf3ff;
   font-family: Roboto;
+  text-align: center;
 }
 
 header{
@@ -23,12 +24,13 @@ ul{
 }
 
 #game{
-  display: none;
+  display: block;
 }
 
 .score-panel{
   text-align: center;
   font-size: 1.4em;
+  margin: 8px;
 }
 
 .stars{
@@ -36,7 +38,11 @@ ul{
 }
 
 .moves{
-  margin: 0 48px 0 8px;
+  margin: 0 8px 0 16px;
+}
+
+#reload{
+  margin-left: 16px;
 }
 
 .cards{
@@ -82,7 +88,7 @@ ul{
   text-align: center;
   padding-top: 16px;
   padding-bottom: 16px;
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
 }
@@ -104,8 +110,8 @@ ul{
   color: #686872;
 }
 
-/** Desktop **/
-@media screen and (min-width: 1281px){
+/** Desktop, ipad pro lasdscape **/
+@media screen and (min-width: 1336px){
 
   .score-panel{
     font-size: 1.6em;
@@ -123,8 +129,24 @@ ul{
   }
 }
 
-/** IPAD **/
-@media screen and (min-width: 768px) and (max-width: 1280px){
+/** ipad landscape, ipad pro portrait **/
+@media screen and (min-width: 1024px) and (max-width: 1335px){
+  h1{
+    font-size: 3em;
+  }
+  .cards{
+    margin: 0 16px 0 16px;
+    padding: 8px;
+  }
+  .card{
+    font-size: 72px;
+    margin: 16px;
+  }
+  
+}
+
+/** IPAD portrait**/
+@media screen and (min-width: 768px) and (max-width: 1023px){
 
   header{
     margin: 48px;
@@ -149,12 +171,37 @@ ul{
 }
 
 /** Nexus5 **/
-@media screen and (max-width: 640px) and (orientation: landscape) {
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  .score-panel{
+    width: 10%;
+    font-size: 1.2em;
+  }
   .cards{
-    margin: 16px;
+    margin: 8px 8px 8px 32px;
+    width: 90%;
   }
   .card{
-    font-size: 36px;
+    font-size: 26px;
     margin: 8px 16px 8px 16px;
+  }
+  .stars{
+    display: inline-block;;
+  }
+  .moves{
+    margin-right: 8px;
+    display: block;
+  }
+  #game{
+    display: inline-flex;
+  }
+  #reload{
+    margin-top: 24px;
+  }
+  h1{
+    font-size: 2em;
+    margin: 0px;
+  }
+  header{
+    margin: 8px;
   }
 }

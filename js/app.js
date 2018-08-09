@@ -69,13 +69,13 @@ function starsInit (){
     $(this).addClass('fas');
   });
 
-  $('.moves').text(`${moves} Moves`);
+  $('.moves').text(`${moves}`);
 }
 
 /*** Function to count the star points ***/
 function starsHandler(){
 
-  $('.moves').text(`${moves} Moves`);
+  $('.moves').text(`${moves}`);
 
   const starsIcons = $('.stars').find('i');
 
