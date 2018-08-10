@@ -165,6 +165,7 @@ $('#reload').on('click', reload);
 
 allocateImages();
 
+/** Function to handle when a card is chosen through the keyboard **/
 function keyCardsHandler(){
 
   const selected = $('.select');
@@ -204,10 +205,9 @@ function keyCardsHandler(){
       }, 1000);
     }
   }
-
 }
 
-//key to flip a card
+//key to flip a card or beginn a new game
 const keyEnter = 13;
 //key to reload
 const keyEsc = 27;
@@ -220,41 +220,47 @@ const keyDown = 40;
 
 $(document).keydown(function(e){
 
-  const cards = $('.cards').find('li');
-  const index = cards.index($('.select'));
-  let newCard = $('.select'); 
-
-  switch(e.which) {
-    case keyEnter:
-      keyCardsHandler();
-      break;
-    case  keyEsc:
-      reload();
-      break;   
-    case keyRight:
-      if(index !== 3 && index !== 7 && index !== 11 && index !== 15){
-        newCard = $('.cards li:eq(' + (index + 1) +')');
-      }
-      break;
-    case keyLeft:
-      if(index !== 0 && index !== 4 && index !== 8 && index !== 12){
-        newCard = $('.cards li:eq(' + (index - 1) + ')');
-      }
-      break;
-    case keyDown:
-      if(index !== 12 && index !== 13 && index !== 14 && index !== 15){
-        newCard = $('.cards li:eq(' + (index + 4) + ')');
-      }
-      break;
-    case keyUp:
-      if(index !== 0 && index !== 1 && index !== 2 && index !== 3){
-        newCard = $('.cards li:eq(' + (index - 4) + ')');
-      }
-      break;
-    default:
-       newCard = $('.select'); 
+  if($('#win').css("display") == 'flex'){
+    if(e.which == keyEnter){
+      playAgain();
+    }
+  }else {
+    const cards = $('.cards').find('li');
+    const index = cards.index($('.select'));
+    let newCard = $('.select'); 
+  
+    switch(e.which) {
+      case keyEnter:
+        keyCardsHandler();
+        break;
+      case  keyEsc:
+        reload();
+        break;   
+      case keyRight:
+        if(index !== 3 && index !== 7 && index !== 11 && index !== 15){
+          newCard = $('.cards li:eq(' + (index + 1) +')');
+        }
+        break;
+      case keyLeft:
+        if(index !== 0 && index !== 4 && index !== 8 && index !== 12){
+          newCard = $('.cards li:eq(' + (index - 1) + ')');
+        }
+        break;
+      case keyDown:
+        if(index !== 12 && index !== 13 && index !== 14 && index !== 15){
+          newCard = $('.cards li:eq(' + (index + 4) + ')');
+        }
+        break;
+      case keyUp:
+        if(index !== 0 && index !== 1 && index !== 2 && index !== 3){
+          newCard = $('.cards li:eq(' + (index - 4) + ')');
+        }
+        break;
+      default:
+         newCard = $('.select'); 
+    }
+  
+    $('.select').toggleClass('select unselect');
+    $(newCard[0]).toggleClass('select unselect');
   }
-
-  $('.select').toggleClass('select unselect');
-  $(newCard[0]).toggleClass('select unselect');
 });
