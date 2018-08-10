@@ -1,3 +1,18 @@
+.animation-match {
+  -webkit-animation: shake 0.7s; /* Safari 4+ */
+  -moz-animation: shake 0.7s; /* Fx 5+ */
+  -o-animation: shake 0.7s; /* Opera 12+ */
+  animation: shake 0.7s; /* IE 10+, Fx 29+ */
+}
+
+.animation-error {
+  background: red;
+  -webkit-animation: shift 0.7s; /* Safari 4+ */
+  -moz-animation: shift 0.7s; /* Fx 5+ */
+  -o-animation: shift 0.7s; /* Opera 12+ */
+  animation: shift 0.7s; /* IE 10+, Fx 29+ */
+}
+
 @keyframes shake {
   0% { transform: translate(5px, 5px) rotate(0deg); }
   10% { transform: translate(-5px, -5px) rotate(-5deg); }
