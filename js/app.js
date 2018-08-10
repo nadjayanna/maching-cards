@@ -22,20 +22,16 @@ keyDownCardsHandler = function (event){
     if(event.which == keyEnter){
       playAgain();
     }
-  }
-  else { //if is the game screen
-    
+  }else if (event.which == keyEsc){ 
+    reload();
+  }else{
     const cards = $('.cards').find('li');
     const index = cards.index($('.select'));
     let newCard = $('.select'); 
-  
     switch(event.which) {
       case keyEnter:
         keySelectCards();
         break;
-      case  keyEsc:
-        reload();
-        break;   
       case keyRight:
         if(index !== 3 && index !== 7 && index !== 11 && index !== 15){
           newCard = $('.cards li:eq(' + (index + 1) +')');
