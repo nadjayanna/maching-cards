@@ -157,8 +157,9 @@ clickCardsHandler = function (event){
   
       moves++;
       starsHandler();
-
+      
       isMatch(clicked);
+
       matchTimeOut = setTimeout(function() { 
         
         //enable cards click
@@ -206,8 +207,10 @@ function keyCardsHandler(){
       moves++;
       starsHandler();
 
+      isMatch(clicked);
+
       matchTimeOut = setTimeout(function() { 
-        isMatch(clicked);
+        
         //enable cards click
         $('.cards').on('click', 'li', clickCardsHandler);
 
