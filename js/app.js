@@ -94,10 +94,15 @@ function starsHandler(){
 
 function reload(){
 
+  //clear timeout for matching cards
+  clearTimeout(matchTimeOut);
+
   //adjust all cards classes so they comeback to hidden
   const cards = $(".cards").find("li");
   $(cards).removeClass();
-  $(cards).toggleClass('card col hide');
+  $(cards).toggleClass('card col hide unselect');
+  const first = $(cards).first()[0];
+  $(first).toggleClass('select unselect');
 
   //sort the images
   allocateImages();  
@@ -107,12 +112,14 @@ function playAgain(){
   $('#game').show();
   $('#win').css('display', 'none');
   $('header').show();
-;
   reload();
 }
 
 /** Function to handler the cards click event**/
 clickCardsHandler = function (event){
+
+  $('.select').toggleClass('select unselect');
+  $(this).toggleClass('select unselect');
   
   //not allow to flip the card that was alredy flipped
   if($(this).hasClass('hide')){
@@ -154,10 +161,100 @@ clickCardsHandler = function (event){
 }
 
 /** add click listener to the reload **/
-$('#reload').on('click', function (event){
-  //clear timeout for matching cards
-  clearTimeout(matchTimeOut);
-  reload();
-});
+$('#reload').on('click', reload);
 
 allocateImages();
+
+function keyCardsHandler(){
+
+  const selected = $('.select');
+  //not allow to flip the card that was alredy flipped
+  if(selected.hasClass('hide')){
+
+    //select the elemente where the icon will be display
+    const icon = selected[0].firstChild;
+
+    //make the icon show
+    $(icon).toggleClass('icon-clicked icon');
+
+    //change the card aspect
+    $(selected).toggleClass('hide clicked');
+  
+    const clicked = $('.clicked');
+  
+    if(clicked.length == 2){
+  
+      //dont allow clicks while evaluating if there is a match
+      $('.cards').off('click', 'li', clickCardsHandler);
+  
+      moves++;
+      starsHandler();
+
+      matchTimeOut = setTimeout(function() { 
+        isMatch(clicked);
+        //enable cards click
+        $('.cards').on('click', 'li', clickCardsHandler);
+
+        if($('.match').length == 16){
+          $('#game').hide();
+          $('#win').css('display', 'flex');
+          $('header').hide();
+          $('.congrats-moves').text(`With ${moves} Moves and ${$('.fa-star.fas').length} Stars.`);
+        }
+      }, 1000);
+    }
+  }
+
+}
+
+//key to flip a card
+const keyEnter = 13;
+//key to reload
+const keyEsc = 27;
+//keys to move
+const keyLeft = 37;
+const keyUp = 38;
+const keyRight = 39;
+const keyDown = 40;
+
+
+$(document).keydown(function(e){
+
+  const cards = $('.cards').find('li');
+  const index = cards.index($('.select'));
+  let newCard = $('.select'); 
+
+  switch(e.which) {
+    case keyEnter:
+      keyCardsHandler();
+      break;
+    case  keyEsc:
+      reload();
+      break;   
+    case keyRight:
+      if(index !== 3 && index !== 7 && index !== 11 && index !== 15){
+        newCard = $('.cards li:eq(' + (index + 1) +')');
+      }
+      break;
+    case keyLeft:
+      if(index !== 0 && index !== 4 && index !== 8 && index !== 12){
+        newCard = $('.cards li:eq(' + (index - 1) + ')');
+      }
+      break;
+    case keyDown:
+      if(index !== 12 && index !== 13 && index !== 14 && index !== 15){
+        newCard = $('.cards li:eq(' + (index + 4) + ')');
+      }
+      break;
+    case keyUp:
+      if(index !== 0 && index !== 1 && index !== 2 && index !== 3){
+        newCard = $('.cards li:eq(' + (index - 4) + ')');
+      }
+      break;
+    default:
+       newCard = $('.select'); 
+  }
+
+  $('.select').toggleClass('select unselect');
+  $(newCard[0]).toggleClass('select unselect');
+});
