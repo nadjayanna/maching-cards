@@ -48,15 +48,29 @@ function isMatch(clicked){
   const secondIcon = secondCard.childNodes[0];
 
   if (fisrtIcon.className == secondIcon.className){
-    $(firstCard).toggleClass('match clicked');
-    $(secondCard).toggleClass('match clicked');
-  }
-  else{
-    $(fisrtIcon).toggleClass('icon-clicked icon');
-    $(firstCard).toggleClass('hide clicked');
 
-    $(secondIcon).toggleClass('icon-clicked icon');
-    $(secondCard).toggleClass('hide clicked');
+    //add animation class
+    $(secondCard).toggleClass('match clicked animation-match ');
+    $(firstCard).toggleClass('match clicked animation-match ');
+
+    //remove animation class
+    setTimeout(function(){
+      $(firstCard).toggleClass('animation-match');
+      $(secondCard).toggleClass('animation-match');
+    },1000);
+  }else {
+    //add animation class
+    $(firstCard).toggleClass('animation-error');
+    $(secondCard).toggleClass('animation-error');
+
+    //remove animation class
+    setTimeout(function(){
+      $(fisrtIcon).toggleClass('icon-clicked icon');
+      $(firstCard).toggleClass('hide clicked animation-error');
+  
+      $(secondIcon).toggleClass('icon-clicked icon');
+      $(secondCard).toggleClass('hide clicked animation-error');
+    },1000);
   }
 }
 
@@ -144,8 +158,9 @@ clickCardsHandler = function (event){
       moves++;
       starsHandler();
 
+      isMatch(clicked);
       matchTimeOut = setTimeout(function() { 
-        isMatch(clicked);
+        
         //enable cards click
         $('.cards').on('click', 'li', clickCardsHandler);
 
@@ -217,14 +232,16 @@ const keyUp = 38;
 const keyRight = 39;
 const keyDown = 40;
 
-
 $(document).keydown(function(e){
 
+  //if the win screen is display
   if($('#win').css("display") == 'flex'){
     if(e.which == keyEnter){
       playAgain();
     }
-  }else {
+  }
+  else { //if is the game screen
+    
     const cards = $('.cards').find('li');
     const index = cards.index($('.select'));
     let newCard = $('.select'); 
