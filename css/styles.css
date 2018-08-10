@@ -88,7 +88,7 @@ ul{
   text-align: center;
   padding-top: 16px;
   padding-bottom: 16px;
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
 }

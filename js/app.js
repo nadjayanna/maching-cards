@@ -15,10 +15,12 @@ let keyDownCardsHandler;
 let animationErrorTimeOut;
 let animationMatchTimeOut;
 
+$('#win').hide();
+
 /** Function to handler the keydown events of the game**/
 keyDownCardsHandler = function (event){
   //if the win screen is display
-  if($('#win').css("display") == 'flex'){
+  if($('#win').is(":visible")){
     if(event.which == keyEnter){
       playAgain();
     }
@@ -184,10 +186,17 @@ function isMatch(clicked){
 
 /** Funtion to open the win screen**/
 function victory(){
-  $('#game').hide();
-  $('#win').css('display', 'flex');
-  $('header').hide();
+  $('#game').fadeOut("slow");
+  $('#win').fadeIn(1500);
+  $('header').fadeOut("slow");
   $('.congrats-moves').text(`With ${moves} Moves and ${$('.fa-star.fas').length} Stars.`);
+}
+
+function playAgain(){
+  $('#game').fadeIn(1500);
+  $('#win').fadeOut("slow");
+  $('header').fadeIn(1500);
+  reload();
 }
 
 /** Function to initiate the stars **/
@@ -238,13 +247,6 @@ function reload(){
   $(first).toggleClass('select unselect');
   //sort the images
   allocateImages();  
-}
-
-function playAgain(){
-  $('#game').show();
-  $('#win').css('display', 'none');
-  $('header').show();
-  reload();
 }
 
 /** add click listener to the reload icon **/
