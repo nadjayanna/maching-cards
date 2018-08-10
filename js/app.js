@@ -1,5 +1,6 @@
-//key to flip a card or beginn a new game
+//key to flip a card
 const keyEnter = 13;
+const keySpace = 32;
 //key to reload
 const keyEsc = 27;
 //keys to move
@@ -32,6 +33,9 @@ keyDownCardsHandler = function (event){
     let newCard = $('.select'); 
     switch(event.which) {
       case keyEnter:
+        keySelectCards();
+        break;
+      case keySpace:
         keySelectCards();
         break;
       case keyRight:
@@ -73,6 +77,7 @@ clickCardsHandler = function (event){
     event.stopPropagation();
     //select the elemente where the icon will be display
     const icon = event.target.childNodes[0];
+
     //make the icon show
     $(icon).toggleClass('icon-clicked icon');
     //change the card aspect
