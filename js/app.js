@@ -2,6 +2,8 @@
 let matchTimeOut;
 let moves;
 let clickCardsHandler;
+let animationErrorTimeOut;
+let animationMatchTimeOut;
 
 /** Function that will allocate randonly the icons into the cards**/
 function allocateImages (){
@@ -54,7 +56,7 @@ function isMatch(clicked){
     $(firstCard).toggleClass('match clicked animation-match ');
 
     //remove animation class
-    setTimeout(function(){
+    animationErrorTimeOut = setTimeout(function(){
       $(firstCard).toggleClass('animation-match');
       $(secondCard).toggleClass('animation-match');
     },1000);
@@ -64,7 +66,7 @@ function isMatch(clicked){
     $(secondCard).toggleClass('animation-error');
 
     //remove animation class
-    setTimeout(function(){
+    animationMatchTimeOut = setTimeout(function(){
       $(fisrtIcon).toggleClass('icon-clicked icon');
       $(firstCard).toggleClass('hide clicked animation-error');
   
@@ -110,6 +112,14 @@ function reload(){
 
   //clear timeout for matching cards
   clearTimeout(matchTimeOut);
+
+  //stop animation
+  $('.animation-error').stop();
+  $('.animation-match').stop();
+  
+  //clear animations timeout
+  clearTimeout(animationMatchTimeOut);
+  clearTimeout(animationErrorTimeOut);
 
   //adjust all cards classes so they comeback to hidden
   const cards = $(".cards").find("li");
@@ -157,7 +167,7 @@ clickCardsHandler = function (event){
   
       moves++;
       starsHandler();
-      
+
       isMatch(clicked);
 
       matchTimeOut = setTimeout(function() { 
