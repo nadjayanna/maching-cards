@@ -14,6 +14,9 @@ let clickCardsHandler;
 let keyDownCardsHandler;
 let animationErrorTimeOut;
 let animationMatchTimeOut;
+let initTimer;
+let startTime;
+let timer;
 
 /** Function to handler the keydown events of the game**/
 keyDownCardsHandler = function (event){
@@ -67,6 +70,11 @@ keyDownCardsHandler = function (event){
 /** Function to handler the cards click event**/
 clickCardsHandler = function (event){
 
+  initTimer++;
+  if(initTimer == 1){
+    startTimer();
+  }
+
   $('.select').toggleClass('select unselect');
   $(this).toggleClass('select unselect'); 
   //not allow to flip the card that was alredy flipped
@@ -98,6 +106,7 @@ function allocateImages (){
   const iconsList = ["fa-ambulance", "fa-bus-alt", "fa-wheelchair", "fa-frog", "fa-chess-knight", "fa-laptop-code", "fa-smile-wink", "fa-coffee", "fa-ambulance", "fa-bus-alt", "fa-wheelchair", "fa-frog", "fa-chess-knight", "fa-laptop-code", "fa-smile-wink", "fa-coffee"];
   //initiate stars
   starsInit();
+  initTimer = 0;
 
   icons.each(function() {
     //randonly select a icon from the vector of icons
@@ -124,6 +133,11 @@ function getRandomInt(max) {
 /** Function to handle when a card is chosen through the keyboard **/
 function keySelectCards(){
 
+  initTimer++;
+  if(initTimer == 1){
+    startTimer();
+  }
+
   const selected = $('.select');
   //not allow to flip the card that was alredy flipped
   if(selected.hasClass('hide')){
@@ -144,6 +158,15 @@ function keySelectCards(){
   }
 }
 
+function startTimer (){
+  startTime = $.now();
+  timer = setInterval(function() {
+    const diference = Math.floor((new Date - startTime) / 1000);
+    const minutes = Math.floor(diference/60);
+    const seconds = diference - (minutes*60);
+    $('#timer').text(('0' + minutes).slice(-2) +':'+('0' + seconds).slice(-2));
+  }, 1000);
+}
 /** Function to verify if is a match**/
 function isMatch(clicked){
 
@@ -190,6 +213,7 @@ function isMatch(clicked){
 function victory(){
   $('#winner').modal('show');
   $('.congrats-moves').text(`With ${moves} Moves and ${$('.fa-star.fas').length} Stars.`);
+  $('.congrats-time').text('Time: ' + $('#timer').text());
 }
 
 function playAgain(){
@@ -235,6 +259,9 @@ function reload(){
   //clear animations timeout
   clearTimeout(animationMatchTimeOut);
   clearTimeout(animationErrorTimeOut);
+  //clear timer
+  clearTimeout(timer);
+  $('#timer').text('00:00');
   //adjust all cards classes so they comeback to hidden
   const cards = $(".cards").find("li");
   $(cards).removeClass();

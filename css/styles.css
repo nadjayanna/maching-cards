@@ -84,7 +84,7 @@ ul {
   display: block;
 }
 
-.congrats {
+.congrats-title {
   color: #494c51;
   font-size: 24px;
   margin-top: 16px;
@@ -97,7 +97,8 @@ ul {
   -webkit-text-stroke: 2px #edf3ff;
 }
 
-.congrats-moves {
+.congrats-moves,
+.congrats-time {
   color: #686872;
 }
 
@@ -107,21 +108,6 @@ ul {
 
 .unselect {
   border: 4px solid transparent;
-}
-
-.animation-match {
-  -webkit-animation: shake 0.7s; /* Safari 4+ */
-  -moz-animation: shake 0.7s; /* Fx 5+ */
-  -o-animation: shake 0.7s; /* Opera 12+ */
-  animation: shake 0.7s; /* IE 10+, Fx 29+ */
-}
-
-.animation-error {
-  background: red;
-  -webkit-animation: shift 0.7s; /* Safari 4+ */
-  -moz-animation: shift 0.7s; /* Fx 5+ */
-  -o-animation: shift 0.7s; /* Opera 12+ */
-  animation: shift 0.7s; /* IE 10+, Fx 29+ */
 }
 
 /** Desktop, ipad pro lasdscape **/
@@ -234,5 +220,9 @@ ul {
 
   #reload {
     margin-top: 24px;
+  }
+
+  #timer {
+    margin-top: 16px;
   }
 }
