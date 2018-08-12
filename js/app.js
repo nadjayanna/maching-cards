@@ -10,13 +10,14 @@ const keyRight = 39;
 const keyDown = 40;
 
 let moves;
-let clickCardsHandler;
+let clickSelectCard;
 let keyDownCardsHandler;
 let animationErrorTimeOut;
 let animationMatchTimeOut;
+let waitFlipTimeOut;
 let initTimer;
 let startTime;
-let timer;
+let time;
 
 /** Function to handler the keydown events of the game**/
 keyDownCardsHandler = function (event){
@@ -28,34 +29,34 @@ keyDownCardsHandler = function (event){
   }else if (event.which == keyEsc){ 
     reload();
   }else{
-    const cards = $('.cards').find('li');
+    const cards = $('.board').find('.flip-container');
     const index = cards.index($('.select'));
     let newCard = $('.select'); 
     switch(event.which) {
       case keyEnter:
-        keySelectCards();
+        keySelectCard();
         break;
       case keySpace:
-        keySelectCards();
+        keySelectCard();
         break;
       case keyRight:
         if(index !== 3 && index !== 7 && index !== 11 && index !== 15){
-          newCard = $('.cards li:eq(' + (index + 1) +')');
+          newCard = $('.board .flip-container:eq(' + (index + 1) +')');
         }
         break;
       case keyLeft:
         if(index !== 0 && index !== 4 && index !== 8 && index !== 12){
-          newCard = $('.cards li:eq(' + (index - 1) + ')');
+          newCard = $('.board .flip-container:eq(' + (index - 1) + ')');
         }
         break;
       case keyDown:
         if(index !== 12 && index !== 13 && index !== 14 && index !== 15){
-          newCard = $('.cards li:eq(' + (index + 4) + ')');
+          newCard = $('.board .flip-container:eq(' + (index + 4) + ')');
         }
         break;
       case keyUp:
         if(index !== 0 && index !== 1 && index !== 2 && index !== 3){
-          newCard = $('.cards li:eq(' + (index - 4) + ')');
+          newCard = $('.board .flip-container:eq(' + (index - 4) + ')');
         }
         break;
       default:
@@ -68,40 +69,21 @@ keyDownCardsHandler = function (event){
 }
 
 /** Function to handler the cards click event**/
-clickCardsHandler = function (event){
+clickSelectCard = function (event){
 
-  initTimer++;
-  if(initTimer == 1){
-    startTimer();
-  }
+  timer();
 
   $('.select').toggleClass('select unselect');
   $(this).toggleClass('select unselect'); 
-  //not allow to flip the card that was alredy flipped
-  if($(this).hasClass('hide')){
-    event.stopPropagation();
-    //select the elemente where the icon will be display
-    const icon = event.target.childNodes[0];
 
-    //make the icon show
-    $(icon).toggleClass('icon-clicked icon');
-    //change the card aspect
-    $(this).toggleClass('hide clicked');
-    const clicked = $('.clicked');  
-    if(clicked.length == 2){
-      isMatch(clicked);
-      if($('.match').length == 16){
-        victory();
-      }
-    }
-  }
+  checkSelected();
 }
 
 /** Function that will allocate randonly the icons into the cards**/
 function allocateImages (){
   
   //list of elementes where the icon will be allocate
-  const icons = $(".cards").find("i");
+  const icons = $(".board").find("i");
   //vector with the cards icons
   const iconsList = ["fa-ambulance", "fa-bus-alt", "fa-wheelchair", "fa-frog", "fa-chess-knight", "fa-laptop-code", "fa-smile-wink", "fa-coffee", "fa-ambulance", "fa-bus-alt", "fa-wheelchair", "fa-frog", "fa-chess-knight", "fa-laptop-code", "fa-smile-wink", "fa-coffee"];
   //initiate stars
@@ -119,69 +101,65 @@ function allocateImages (){
   });
 
   /** add listeners to the cards **/
-  $('.cards').on('click', 'li', clickCardsHandler);
+  $('.board').on('click', '.flip-container', clickSelectCard);
   $(document).on('keydown', keyDownCardsHandler);
 }
 
 /** Function to select a integer between 0 (inclusive) and max (exclusive) **/
 function getRandomInt(max) {
-
   max = Math.floor(max);
   return Math.floor(Math.random() * max);
 }
 
-/** Function to handle when a card is chosen through the keyboard **/
-function keySelectCards(){
+function checkFlipped() {
+    isMatch($('.clicked'));
+    if($('.match').length == 16){
+      victory();
+    }
+}
 
-  initTimer++;
-  if(initTimer == 1){
-    startTimer();
-  }
-
-  const selected = $('.select');
-  //not allow to flip the card that was alredy flipped
-  if(selected.hasClass('hide')){
-    //select the elemente where the icon will be display
-    const icon = selected[0].firstChild;
-    //make the icon show
-    $(icon).toggleClass('icon-clicked icon');
-    //change the card aspect
-    $(selected).toggleClass('hide clicked');
-
-    const clicked = $('.clicked');
-    if(clicked.length == 2){
-      isMatch(clicked);
-      if($('.match').length == 16){
-        victory();
-      }
+function checkSelected(){
+//not allow to flip the card that was alredy flipped
+  if($('.select').hasClass('flip') == false){
+    $('.select').toggleClass('flip clicked');
+    if($('.clicked').length == 2){
+      $('.board').off('click', '.flip-container', clickSelectCard);
+      $(document).off('keydown', keyDownCardsHandler);
+      waitFlipTimeOut = setTimeout(checkFlipped,300);
     }
   }
 }
+/** Function to handle when a card is chosen through the keyboard **/
+function keySelectCard(){
+  timer();
+  checkSelected();
+}
 
-function startTimer (){
-  startTime = $.now();
-  timer = setInterval(function() {
-    const diference = Math.floor((new Date - startTime) / 1000);
-    const minutes = Math.floor(diference/60);
-    const seconds = diference - (minutes*60);
-    $('#timer').text(('0' + minutes).slice(-2) +':'+('0' + seconds).slice(-2));
-  }, 1000);
+function timer (){
+  initTimer++;
+  //if is the first move
+  if(initTimer == 1){
+    startTime = $.now();
+    time = setInterval(function() {
+      const diference = Math.floor((new Date - startTime) / 1000);
+      const minutes = Math.floor(diference/60);
+      const seconds = diference - (minutes*60);
+      $('#timer').text(('0' + minutes).slice(-2) +':'+('0' + seconds).slice(-2));
+    }, 1000);
+  }
 }
 /** Function to verify if is a match**/
 function isMatch(clicked){
 
   const firstCard = clicked[0];
-  const fisrtIcon = firstCard.childNodes[0];
+  const firstIcon = $(firstCard).find('i')[0];
   const secondCard = clicked[1];
-  const secondIcon = secondCard.childNodes[0];
-
-  $('.cards').off('click', 'li', clickCardsHandler);
-  $(document).off('keydown', keyDownCardsHandler);
+  const secondIcon = $(secondCard).find('i')[0]
 
   moves++;
   starsHandler();
   
-  if (fisrtIcon.className == secondIcon.className){  
+  if (firstIcon.className == secondIcon.className){  
     //add match animation class
     $(secondCard).toggleClass('match clicked animation-match ');
     $(firstCard).toggleClass('match clicked animation-match ');
@@ -189,21 +167,18 @@ function isMatch(clicked){
     animationErrorTimeOut = setTimeout(function(){
       $(firstCard).toggleClass('animation-match');
       $(secondCard).toggleClass('animation-match');
-      $('.cards').on('click', 'li', clickCardsHandler);
+      $('.board').on('click', '.flip-container', clickSelectCard);
       $(document).on('keydown', keyDownCardsHandler);
     },1000);
   }else {
     //add error animation class
-    $(firstCard).toggleClass('animation-error');
-    $(secondCard).toggleClass('animation-error');
+    $(firstCard).toggleClass('clicked animation-error');
+    $(secondCard).toggleClass('clicked animation-error');
     //remove erro animation class
     animationMatchTimeOut = setTimeout(function(){
-      $(fisrtIcon).toggleClass('icon-clicked icon');
-      $(firstCard).toggleClass('hide clicked animation-error');
-  
-      $(secondIcon).toggleClass('icon-clicked icon');
-      $(secondCard).toggleClass('hide clicked animation-error');
-      $('.cards').on('click', 'li', clickCardsHandler);
+      $(firstCard).toggleClass('flip animation-error');
+      $(secondCard).toggleClass('flip animation-error');
+      $('.board').on('click', '.flip-container', clickSelectCard);
       $(document).on('keydown', keyDownCardsHandler);
     },1000);
   }
@@ -256,16 +231,19 @@ function reload(){
   //stop animation
   $('.animation-error').stop();
   $('.animation-match').stop();
+  $('.flip-container').stop();
+
   //clear animations timeout
   clearTimeout(animationMatchTimeOut);
   clearTimeout(animationErrorTimeOut);
+  clearTimeout(waitFlipTimeOut);
   //clear timer
-  clearTimeout(timer);
+  clearTimeout(time);
   $('#timer').text('00:00');
   //adjust all cards classes so they comeback to hidden
-  const cards = $(".cards").find("li");
+  const cards = $(".board").find(".flip-container");
   $(cards).removeClass();
-  $(cards).toggleClass('card col hide unselect');
+  $(cards).toggleClass('flip-container unselect');
   const first = $(cards).first()[0];
   $(first).toggleClass('select unselect');
   //sort the images
