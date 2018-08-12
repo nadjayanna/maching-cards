@@ -55,12 +55,23 @@
       </div>
     </ul>
   </div>
-  <div id="win">
-    <div class="container">
-      <i class="far fa-check-circle congrats-icon"></i>
-      <p class="congrats">Congratulations! You Won!!!</p>
-      <p class="congrats-moves">With X Moves and Y Stars.</p>
-      <button type="button" class="btn btn-success" onclick="playAgain()">Play Again</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="winner" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="container">
+            <i class="far fa-check-circle congrats-icon"></i>
+            <p class="congrats">Congratulations! You Won!!!</p>
+            <p class="congrats-moves">With X Moves and Y Stars.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="playAgain()">Play Again</button>
+        </div>
+      </div>
     </div>
   </div>
   <script src="js/app.js"></script>

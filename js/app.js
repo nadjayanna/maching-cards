@@ -9,7 +9,6 @@ const keyUp = 38;
 const keyRight = 39;
 const keyDown = 40;
 
-let matchTimeOut;
 let moves;
 let clickCardsHandler;
 let keyDownCardsHandler;
@@ -86,7 +85,7 @@ clickCardsHandler = function (event){
     if(clicked.length == 2){
       isMatch(clicked);
       if($('.match').length == 16){
-        matchTimeOut = setTimeout(victory, 1000);
+        victory();
       }
     }
   }
@@ -141,7 +140,7 @@ function keySelectCards(){
     if(clicked.length == 2){
       isMatch(clicked);
       if($('.match').length == 16){
-        matchTimeOut = setTimeout(victory, 1000);
+        victory();
       }
     }
   }
@@ -191,16 +190,12 @@ function isMatch(clicked){
 
 /** Funtion to open the win screen**/
 function victory(){
-  $('#game').fadeOut("slow");
-  $('#win').fadeIn(1500);
-  $('header').fadeOut("slow");
+  $('#winner').modal('show');
   $('.congrats-moves').text(`With ${moves} Moves and ${$('.fa-star.fas').length} Stars.`);
 }
 
 function playAgain(){
-  $('#game').fadeIn(1500);
-  $('#win').fadeOut("slow");
-  $('header').fadeIn(1500);
+  $('#winner').modal("hide");
   reload();
 }
 
@@ -236,8 +231,6 @@ function starsHandler(){
 
 function reload(){
 
-  //clear timeout for matching cards
-  clearTimeout(matchTimeOut);
   //stop animation
   $('.animation-error').stop();
   $('.animation-match').stop();
