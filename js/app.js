@@ -15,12 +15,10 @@ let keyDownCardsHandler;
 let animationErrorTimeOut;
 let animationMatchTimeOut;
 
-$('#win').hide();
-
 /** Function to handler the keydown events of the game**/
 keyDownCardsHandler = function (event){
   //if the win screen is display
-  if($('#win').is(":visible")){
+  if($('#winner').is(":visible")){
     if(event.which == keyEnter){
       playAgain();
     }
