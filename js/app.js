@@ -93,7 +93,7 @@ function allocateImages (){
   let iconsList = [];
 
   //all icons
-  const allIcons = ['fas fa-ambulance', 'fas fa-bus-alt', 'fab fa-accessible-icon', 'fas fa-frog', 'fas fa-chess-knight', 'fas fa-laptop-code', 'fas fa-smile-wink', 'fas fa-coffee', 'fas fa-user-secret', 'fas fa-bug', 'fas fa-volume-up', 'fas fa-hand-point-up', 'fas fa-kiwi-bird', 'fas fa-cut', 'fas fa-paperclip', 'fas fa-user-graduate', 'fas fa-hand-spock', 'fas fa-music', 'fas fa-microscope', 'fas fa-swimming-pool'];
+  const allIcons = ['fas fa-ambulance', 'fas fa-bus-alt', 'fab fa-accessible-icon', 'fas fa-frog', 'fas fa-chess-knight', 'fas fa-laptop-code', 'fas fa-smile-wink', 'fas fa-coffee', 'fas fa-user-secret', 'fas fa-bug', 'fas fa-volume-up', 'fas fa-hand-point-up', 'fas fa-kiwi-bird', 'fas fa-cut', 'fas fa-paperclip', 'fas fa-user-graduate', 'fas fa-hand-spock', 'fas fa-music', 'fas fa-microscope', 'fas fa-swimming-pool', 'fas fa-pencil-alt', 'fas fa-bicycle', 'fas fa-shopping-cart', 'fas fa-bed', 'fas fa-globe-americas', 'fas fa-umbrella-beach', 'fas fa-space-shuttle', 'fas fa-quidditch', 'fas fa-table-tennis', 'fas fa-sun', 'far fa-save', 'fas fa-couch'];
 
   for(i = 0; i < 8; i++){
     const index = getRandomInt(allIcons.length);
