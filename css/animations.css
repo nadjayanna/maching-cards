@@ -1,3 +1,32 @@
+.flip-container {
+  -webkit-perspective: 1000;
+  -moz-perspective: 1000;
+  -o-perspective: 1000;
+  perspective: 1000;
+  border-radius: 8px;
+}
+
+.flip-container.flip .card {
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+
+.card {
+  border: 0px;
+  position: relative;
+  -webkit-transition: 0.5s;
+  -webkit-transform-style: preserve-3d;
+  -moz-transition: 0.5s;
+  -moz-transform-style: preserve-3d;
+  -o-transition: 0.5s;
+  -o-transform-style: preserve-3d;
+  transition: 0.5s;
+  transform-style: preserve-3d;
+}
+
+
 .animation-match {
   -webkit-animation: shake 0.7s; /* Safari 4+ */
   -moz-animation: shake 0.7s; /* Fx 5+ */
