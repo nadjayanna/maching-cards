@@ -90,9 +90,17 @@ function allocateImages (){
   
   //list of elementes where the icon will be allocate
   const icons = $(".board").find("i");
+  let iconsList = [];
 
-  //vector with the available icons
-  const iconsList = ["fa-ambulance", "fa-bus-alt", "fa-wheelchair", "fa-frog", "fa-chess-knight", "fa-laptop-code", "fa-smile-wink", "fa-coffee", "fa-ambulance", "fa-bus-alt", "fa-wheelchair", "fa-frog", "fa-chess-knight", "fa-laptop-code", "fa-smile-wink", "fa-coffee"];
+  //all icons
+  const allIcons = ['fas fa-ambulance', 'fas fa-bus-alt', 'fab fa-accessible-icon', 'fas fa-frog', 'fas fa-chess-knight', 'fas fa-laptop-code', 'fas fa-smile-wink', 'fas fa-coffee', 'fas fa-user-secret', 'fas fa-bug', 'fas fa-volume-up', 'fas fa-hand-point-up', 'fas fa-kiwi-bird', 'fas fa-cut', 'fas fa-paperclip', 'fas fa-user-graduate', 'fas fa-hand-spock', 'fas fa-music', 'fas fa-microscope', 'fas fa-swimming-pool'];
+
+  for(i = 0; i < 8; i++){
+    const index = getRandomInt(allIcons.length);
+    iconsList.push(allIcons[index]);
+    iconsList.push(allIcons[index]);
+    allIcons.splice(index,1);
+  }
 
   //initiate stars
   starsInit();
@@ -104,7 +112,6 @@ function allocateImages (){
     //randonly select a icon from the vector of icons
     const index = getRandomInt(iconsList.length);
     $(this).removeClass();
-    $(this).toggleClass('icon fas');
     $(this).toggleClass(iconsList[index]);
     //remove the icon that was already allocated
     iconsList.splice(index,1);
