@@ -109,6 +109,8 @@ ul {
 
 .card-front {
   background: transparent;
+  font-size: 48px;
+  color: #fcfcf7;
   z-index: 2;
   -webkit-transform: rotateY(180deg);
   -moz-transform: rotateY(180deg);
@@ -133,14 +135,6 @@ ul {
   top: 0;
   left: 0;
 }
-
-/*.icon::before {
-  display: none;
-}
-
-.icon {
-  display: block;
-}*/
 
 .congrats-title {
   color: #494c51;
@@ -236,7 +230,7 @@ ul {
   }
 }
 
-/** Nexus5 landscap
+/** Nexus5 landscap **/
 @media screen and (max-width: 768px) and (orientation: landscape) {
 
   header {
@@ -251,16 +245,36 @@ ul {
   .score-panel {
     width: 10%;
     font-size: 1.2em;
+    margin: 0 8px 0 8px;
   }
 
-  .cards {
-    margin: 8px 8px 8px 32px;
+  .board {
+    margin: 0 8px 0 32px;
     width: 90%;
   }
 
-  .card {
-    font-size: 26px;
-    margin: 6px 12px 6px 12px;
+  .d-flex{
+    margin-bottom: 4px;
+    margin-top: 4px;
+  }
+
+  .card-back, .card-front {
+  width: 74px;
+  height: 54px;
+  border-radius: 4px;
+  }
+
+  .flip-container {
+  width: 82px;
+  height: 62px;
+  }
+  
+  .card-front {
+    font-size: 38px;
+  }
+
+  .match {
+    background: #02ccba;
   }
 
   .stars {

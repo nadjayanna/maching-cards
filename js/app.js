@@ -161,8 +161,10 @@ function isMatch(clicked){
   
   if (firstIcon.className == secondIcon.className){  
     //add match animation class
-    $(secondCard).toggleClass('match clicked animation-match ');
-    $(firstCard).toggleClass('match clicked animation-match ');
+    $(firstCard).toggleClass('clicked animation-match ');
+    $(firstCard).find('.card-front').toggleClass('match');
+    $(secondCard).toggleClass('clicked animation-match ');
+    $(secondCard).find('.card-front').toggleClass('match');
     //remove match animation class
     animationErrorTimeOut = setTimeout(function(){
       $(firstCard).toggleClass('animation-match');
@@ -246,6 +248,9 @@ function reload(){
   $(cards).toggleClass('flip-container unselect');
   const first = $(cards).first()[0];
   $(first).toggleClass('select unselect');
+  const cardFront = $('.card-front');
+  $(cardFront).removeClass();
+  cardFront.addClass('card-front');
   //sort the images
   allocateImages();  
 }
