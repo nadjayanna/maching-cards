@@ -15,23 +15,25 @@ let keyDownCardsHandler;
 let animationErrorTimeOut;
 let animationMatchTimeOut;
 let waitFlipTimeOut;
-let initTimer;
+let firstSelection;
 let startTime;
 let time;
 
 /** Function to handler the keydown events of the game**/
 keyDownCardsHandler = function (event){
-  //if the win screen is display
+  //if the winner modal is display
   if($('#winner').is(":visible")){
     if(event.which == keyEnter){
       playAgain();
-    }
-  }else if (event.which == keyEsc){ 
+    }else if (event.which == keyEsc){
+      $('#winner').modal("hide");
+    } //if the board is display esc will reload the game
+  }else if (event.which == keyEsc){
     reload();
   }else{
     const cards = $('.board').find('.flip-container');
     const index = cards.index($('.select'));
-    let newCard = $('.select'); 
+    let newCard = $('.select');;
     switch(event.which) {
       case keyEnter:
         keySelectCard();
@@ -40,21 +42,25 @@ keyDownCardsHandler = function (event){
         keySelectCard();
         break;
       case keyRight:
+        //check if the select card isn't in the last column
         if(index !== 3 && index !== 7 && index !== 11 && index !== 15){
           newCard = $('.board .flip-container:eq(' + (index + 1) +')');
         }
         break;
       case keyLeft:
+        //check if  the select card isn't in the first column
         if(index !== 0 && index !== 4 && index !== 8 && index !== 12){
           newCard = $('.board .flip-container:eq(' + (index - 1) + ')');
         }
         break;
       case keyDown:
+        //check if  the select card isn't in the last line
         if(index !== 12 && index !== 13 && index !== 14 && index !== 15){
           newCard = $('.board .flip-container:eq(' + (index + 4) + ')');
         }
         break;
       case keyUp:
+        //check if the select card isn't in the first line
         if(index !== 0 && index !== 1 && index !== 2 && index !== 3){
           newCard = $('.board .flip-container:eq(' + (index - 4) + ')');
         }
@@ -84,11 +90,15 @@ function allocateImages (){
   
   //list of elementes where the icon will be allocate
   const icons = $(".board").find("i");
-  //vector with the cards icons
+
+  //vector with the available icons
   const iconsList = ["fa-ambulance", "fa-bus-alt", "fa-wheelchair", "fa-frog", "fa-chess-knight", "fa-laptop-code", "fa-smile-wink", "fa-coffee", "fa-ambulance", "fa-bus-alt", "fa-wheelchair", "fa-frog", "fa-chess-knight", "fa-laptop-code", "fa-smile-wink", "fa-coffee"];
+
   //initiate stars
   starsInit();
-  initTimer = 0;
+
+  //reload time;
+  firstSelection = false;
 
   icons.each(function() {
     //randonly select a icon from the vector of icons
@@ -112,7 +122,10 @@ function getRandomInt(max) {
 }
 
 function checkFlipped() {
+    //check if the actual two flipped cards are a match
     isMatch($('.clicked'));
+
+    //if all cards match is a victory
     if($('.match').length == 16){
       victory();
     }
@@ -129,6 +142,7 @@ function checkSelected(){
     }
   }
 }
+
 /** Function to handle when a card is chosen through the keyboard **/
 function keySelectCard(){
   timer();
@@ -136,9 +150,9 @@ function keySelectCard(){
 }
 
 function timer (){
-  initTimer++;
-  //if is the first move
-  if(initTimer == 1){
+  //activates the timer after the first card is selected
+  if(!firstSelection){
+    firstSelection = true;
     startTime = $.now();
     time = setInterval(function() {
       const diference = Math.floor((new Date - startTime) / 1000);
@@ -148,6 +162,7 @@ function timer (){
     }, 1000);
   }
 }
+
 /** Function to verify if is a match**/
 function isMatch(clicked){
 
@@ -186,7 +201,7 @@ function isMatch(clicked){
   }
 }
 
-/** Funtion to open the win screen**/
+/** Funtion to open the winner modal**/
 function victory(){
   $('#winner').modal('show');
   $('.congrats-moves').text(`With ${moves} Moves and ${$('.fa-star.fas').length} Stars.`);
@@ -216,13 +231,13 @@ function starsHandler(){
   $('.moves').text(`${moves}`);
   const starsIcons = $('.stars').find('i');
   switch (moves) {
-    case 12:
+    case 14:
       $(starsIcons[2]).toggleClass('fas far');
       break;
-    case 16:
+    case 18:
       $(starsIcons[1]).toggleClass('fas far');
       break;
-    case 20:
+    case 22:
       $(starsIcons[0]).toggleClass('fas far');
       break;
   }
@@ -242,6 +257,7 @@ function reload(){
   //clear timer
   clearTimeout(time);
   $('#timer').text('00:00');
+
   //adjust all cards classes so they comeback to hidden
   const cards = $(".board").find(".flip-container");
   $(cards).removeClass();
@@ -251,6 +267,9 @@ function reload(){
   const cardFront = $('.card-front');
   $(cardFront).removeClass();
   cardFront.addClass('card-front');
+  
+  $('.board').off('click', '.flip-container', clickSelectCard);
+  $(document).off('keydown', keyDownCardsHandler);
   //sort the images
   allocateImages();  
 }
