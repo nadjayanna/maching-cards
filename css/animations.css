@@ -35,7 +35,7 @@
 }
 
 .animation-error {
-  background: red;
+  background: #e03838;
   -webkit-animation: shift 0.7s; /* Safari 4+ */
   -moz-animation: shift 0.7s; /* Fx 5+ */
   -o-animation: shift 0.7s; /* Opera 12+ */
