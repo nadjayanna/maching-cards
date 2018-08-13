@@ -10,5 +10,5 @@ The game was developed with the possibility to play with the keyboard.
  * ESC reload the game when board is displayed and close Victory modal when modal is displayed
 
 ## project tools
-For this project I based the flip animation on:
-https://davidwalsh.name/css-flip
+ * Bootstrap 4
+ * the flip animation was based on https://davidwalsh.name/css-flip

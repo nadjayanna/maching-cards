@@ -238,9 +238,6 @@ function starsHandler(){
     case 18:
       $(starsIcons[1]).toggleClass('fas far');
       break;
-    case 22:
-      $(starsIcons[0]).toggleClass('fas far');
-      break;
   }
 }
 
