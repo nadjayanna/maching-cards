@@ -203,6 +203,7 @@ function isMatch(clicked){
 
 /** Funtion to open the winner modal**/
 function victory(){
+  clearTimeout(time);
   $('#winner').modal('show');
   $('.congrats-moves').text(`With ${moves} Moves and ${$('.fa-star.fas').length} Stars.`);
   $('.congrats-time').text('Time: ' + $('#timer').text());
@@ -255,7 +256,6 @@ function reload(){
   clearTimeout(animationErrorTimeOut);
   clearTimeout(waitFlipTimeOut);
   //clear timer
-  clearTimeout(time);
   $('#timer').text('00:00');
 
   //adjust all cards classes so they comeback to hidden
