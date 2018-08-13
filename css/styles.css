@@ -85,9 +85,6 @@ ul {
   font-size: 48px;
   color: #fcfcf7;
   z-index: 2;
-  -webkit-transform: rotateY(180deg);
-  -moz-transform: rotateY(180deg);
-  -o-transform: rotateY(180deg);
   transform: rotateY(180deg); 
 }
 
@@ -99,11 +96,7 @@ ul {
 }
 
 .card-back, .card-front {
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  -o-backface-visibility: hidden;
   backface-visibility: hidden;
-
   position: absolute;
   top: 0;
   left: 0;
@@ -164,7 +157,7 @@ ul {
   }
 
   .card-front {
-    font-size: 88px;
+    font-size: 78px;
   }
 
   .select {
@@ -200,7 +193,6 @@ ul {
     width: 118px;
     height: 130px;
     border-radius: 8px;
- 
   }
 
   .flip-container {
@@ -209,7 +201,7 @@ ul {
   }
 
   .card-front {
-    font-size: 88px;
+    font-size: 84px;
   }
 
   .select {

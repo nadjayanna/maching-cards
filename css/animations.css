@@ -1,45 +1,26 @@
 .flip-container {
-  -webkit-perspective: 1000;
-  -moz-perspective: 1000;
-  -o-perspective: 1000;
-  perspective: 1000;
+  perspective: 1000px;
   border-radius: 8px;
 }
 
 .flip-container.flip .card {
-  -webkit-transform: rotateY(180deg);
-  -moz-transform: rotateY(180deg);
-  -o-transform: rotateY(180deg);
   transform: rotateY(180deg);
 }
 
 .card {
   border: 0px;
   position: relative;
-  -webkit-transition: 0.5s;
-  -webkit-transform-style: preserve-3d;
-  -moz-transition: 0.5s;
-  -moz-transform-style: preserve-3d;
-  -o-transition: 0.5s;
-  -o-transform-style: preserve-3d;
   transition: 0.5s;
   transform-style: preserve-3d;
 }
 
-
 .animation-match {
-  -webkit-animation: shake 0.7s; /* Safari 4+ */
-  -moz-animation: shake 0.7s; /* Fx 5+ */
-  -o-animation: shake 0.7s; /* Opera 12+ */
-  animation: shake 0.7s; /* IE 10+, Fx 29+ */
+  animation: shake 0.7s;
 }
 
 .animation-error {
   background: #e03838;
-  -webkit-animation: shift 0.7s; /* Safari 4+ */
-  -moz-animation: shift 0.7s; /* Fx 5+ */
-  -o-animation: shift 0.7s; /* Opera 12+ */
-  animation: shift 0.7s; /* IE 10+, Fx 29+ */
+  animation: shift 0.7s;
 }
 
 @keyframes shake {
@@ -56,91 +37,7 @@
   100% { transform: translate(-5px, -5px) rotate(-5deg); }
 }
 
-@-webkit-keyframes shake {
-  0% { transform: translate(5px, 5px) rotate(0deg); }
-  10% { transform: translate(-5px, -5px) rotate(-5deg); }
-  20% { transform: translate(0, 0) rotate(5deg); }
-  30% { transform: translate(5px, 5px) rotate(0deg); }
-  40% { transform: translate(-5px, -5px) rotate(5deg); }
-  50% { transform: translate(0, 0) rotate(-5deg); }
-  60% { transform: translate(-5px, -5px) rotate(0deg); }
-  70% { transform: translate(5px, 5px) rotate(-5deg); }
-  80% { transform: translate(0, 0) rotate(5deg); }
-  90% { transform: translate(5px, 5px) rotate(0deg); }
-  100% { transform: translate(-5px, -5px) rotate(-5deg); }
-}
-
-@-moz-keyframes shake {
-  0% { transform: translate(5px, 5px) rotate(0deg); }
-  10% { transform: translate(-5px, -5px) rotate(-5deg); }
-  20% { transform: translate(0, 0) rotate(5deg); }
-  30% { transform: translate(5px, 5px) rotate(0deg); }
-  40% { transform: translate(-5px, -5px) rotate(5deg); }
-  50% { transform: translate(0, 0) rotate(-5deg); }
-  60% { transform: translate(-5px, -5px) rotate(0deg); }
-  70% { transform: translate(5px, 5px) rotate(-5deg); }
-  80% { transform: translate(0, 0) rotate(5deg); }
-  90% { transform: translate(5px, 5px) rotate(0deg); }
-  100% { transform: translate(-5px, -5px) rotate(-5deg); }
-}
-
-@-o-keyframes shake {
-  0% { transform: translate(5px, 5px) rotate(0deg); }
-  10% { transform: translate(-5px, -5px) rotate(-5deg); }
-  20% { transform: translate(0, 0) rotate(5deg); }
-  30% { transform: translate(5px, 5px) rotate(0deg); }
-  40% { transform: translate(-5px, -5px) rotate(5deg); }
-  50% { transform: translate(0, 0) rotate(-5deg); }
-  60% { transform: translate(-5px, -5px) rotate(0deg); }
-  70% { transform: translate(5px, 5px) rotate(-5deg); }
-  80% { transform: translate(0, 0) rotate(5deg); }
-  90% { transform: translate(5px, 5px) rotate(0deg); }
-  100% { transform: translate(-5px, -5px) rotate(-5deg); }
-}
-
 @keyframes shift {
-  0% { transform: translate(10px, 0); }
-  10% { transform: translate(0, 0); }
-  20% { transform: translate(-10px, 0); }
-  30% { transform: translate(0, 0); }
-  40% { transform: translate(10px, 0); }
-  50% { transform: translate(0, 0); }
-  60% { transform: translate(-10px, 0); }
-  70% { transform: translate(0, 0); }
-  80% { transform: translate(10px, 0); }
-  90% { transform: translate(0, 0); }
-  100% { transform: translate(-10px, 0); }
-}
-
-@-webkit-keyframes shift {
-  0% { transform: translate(10px, 0); }
-  10% { transform: translate(0, 0); }
-  20% { transform: translate(-10px, 0); }
-  30% { transform: translate(0, 0); }
-  40% { transform: translate(10px, 0); }
-  50% { transform: translate(0, 0); }
-  60% { transform: translate(-10px, 0); }
-  70% { transform: translate(0, 0); }
-  80% { transform: translate(10px, 0); }
-  90% { transform: translate(0, 0); }
-  100% { transform: translate(-10px, 0); }
-}
-
-@-moz-keyframes shift {
-  0% { transform: translate(10px, 0); }
-  10% { transform: translate(0, 0); }
-  20% { transform: translate(-10px, 0); }
-  30% { transform: translate(0, 0); }
-  40% { transform: translate(10px, 0); }
-  50% { transform: translate(0, 0); }
-  60% { transform: translate(-10px, 0); }
-  70% { transform: translate(0, 0); }
-  80% { transform: translate(10px, 0); }
-  90% { transform: translate(0, 0); }
-  100% { transform: translate(-10px, 0); }
-}
-
-@-o-keyframes shift {
   0% { transform: translate(10px, 0); }
   10% { transform: translate(0, 0); }
   20% { transform: translate(-10px, 0); }
