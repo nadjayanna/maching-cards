@@ -11,5 +11,6 @@ The game was developed with the possibility to play with the keyboard.
 
 ## project tools
  * Bootstrap 4 https://getbootstrap.com/
+ * jQuery 3 http://jquery.com/
  * Fontawesome for icons https://fontawesome.com/
  * the flip animation was based on https://davidwalsh.name/css-flip
