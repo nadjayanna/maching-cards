@@ -19,6 +19,10 @@ let firstSelection;
 let startTime;
 let time;
 
+document.addEventListener("DOMContentLoaded", function(event) {
+    console.log(localStorage);
+});
+
 /** Function to handler the keydown events of the game**/
 keyDownCardsHandler = function (event){
   //if the winner modal is display
@@ -90,16 +94,57 @@ function allocateImages (){
   
   //list of elementes where the icon will be allocate
   const icons = $(".board").find("i");
-  let iconsList = [];
 
   //all icons
   const allIcons = ['fas fa-ambulance', 'fas fa-bus-alt', 'fab fa-accessible-icon', 'fas fa-frog', 'fas fa-chess-knight', 'fas fa-laptop-code', 'fas fa-smile-wink', 'fas fa-coffee', 'fas fa-user-secret', 'fas fa-bug', 'fas fa-volume-up', 'fas fa-hand-point-up', 'fas fa-kiwi-bird', 'fas fa-cut', 'fas fa-paperclip', 'fas fa-user-graduate', 'fas fa-hand-spock', 'fas fa-music', 'fas fa-microscope', 'fas fa-swimming-pool', 'fas fa-pencil-alt', 'fas fa-bicycle', 'fas fa-shopping-cart', 'fas fa-bed', 'fas fa-globe-americas', 'fas fa-umbrella-beach', 'fas fa-space-shuttle', 'fas fa-quidditch', 'fas fa-table-tennis', 'fas fa-sun', 'far fa-save', 'fas fa-couch'];
 
-  for(i = 0; i < 8; i++){
-    const index = getRandomInt(allIcons.length);
-    iconsList.push(allIcons[index]);
-    iconsList.push(allIcons[index]);
-    allIcons.splice(index,1);
+  if(localStorage.getItem('moves') == 0 || localStorage.getItem('moves') === null){
+
+    movesInit();
+
+    let iconsList = [];
+    let saveIcons = [];
+
+    for(i = 0; i < 8; i++){
+      const index = getRandomInt(allIcons.length);
+      iconsList.push(allIcons[index]);
+      iconsList.push(allIcons[index]);
+      allIcons.splice(index,1);
+    }
+
+    icons.each(function() {
+      //randonly select a icon from the vector of icons
+      const index = getRandomInt(iconsList.length);
+      $(this).removeClass();
+      $(this).toggleClass(iconsList[index]);
+      saveIcons.push(iconsList[index]);
+      //remove the icon that was already allocated
+      iconsList.splice(index,1);
+    });
+    localStorage.setItem('icons', saveIcons);
+  }
+  else{
+
+    moves = localStorage.getItem('moves');
+    $('#timer').text(localStorage.getItem('time'));
+    $('.moves').text(moves);
+    const restoredIcons = localStorage.getItem('icons').split(',');
+    for (var i = 0; i < restoredIcons.length; i++) {
+      $(icons[i]).removeClass();
+      $(icons[i]).toggleClass(restoredIcons[i]);
+    }
+    const restoredFlip = localStorage.getItem('flipped').split(',');
+    const flipContainer = $('.flip-container');
+
+    for (var i = 0; i < restoredFlip.length; i++) {
+      
+      $(flipContainer[i]).removeClass();
+      $(flipContainer[i]).toggleClass(restoredFlip[i]);
+
+      if(restoredFlip[i].lastIndexOf('flip') != 0){
+        $($(flipContainer[i]).find('.card-front')).toggleClass('match');
+      }
+    }
   }
 
   //initiate stars
@@ -107,15 +152,6 @@ function allocateImages (){
 
   //reload time;
   firstSelection = false;
-
-  icons.each(function() {
-    //randonly select a icon from the vector of icons
-    const index = getRandomInt(iconsList.length);
-    $(this).removeClass();
-    $(this).toggleClass(iconsList[index]);
-    //remove the icon that was already allocated
-    iconsList.splice(index,1);
-  });
 
   /** add listeners to the cards **/
   $('.board').on('click', '.flip-container', clickSelectCard);
@@ -161,12 +197,27 @@ function timer (){
   if(!firstSelection){
     firstSelection = true;
     startTime = $.now();
-    time = setInterval(function() {
-      const diference = Math.floor((new Date - startTime) / 1000);
-      const minutes = Math.floor(diference/60);
-      const seconds = diference - (minutes*60);
-      $('#timer').text(('0' + minutes).slice(-2) +':'+('0' + seconds).slice(-2));
-    }, 1000);
+    if(localStorage.getItem('moves') == 0 || localStorage.getItem('moves') === null){
+      time = setInterval(function() {
+        const diference = Math.floor((new Date - startTime) / 1000);
+        const minutes = Math.floor(diference/60);
+        const seconds = diference - (minutes*60);
+        const timeString = ('0' + minutes).slice(-2) +':'+('0' + seconds).slice(-2);
+        localStorage.setItem('time', timeString);
+        $('#timer').text(timeString);
+      }, 1000);
+    }else{
+      const oldTime = localStorage.getItem('time').split(':');
+      time = setInterval(function() {
+        const diference = Math.floor((new Date - startTime) / 1000) + parseInt(oldTime[0])*60 + parseInt(oldTime[1]);
+        const minutes = Math.floor(diference/60);
+        const seconds = diference - (minutes*60);
+        const timeString = ('0' + minutes).slice(-2) +':'+('0' + seconds).slice(-2);
+        localStorage.setItem('time', timeString);
+        $('#timer').text(timeString);
+      }, 1000);
+    }
+    
   }
 }
 
@@ -179,6 +230,7 @@ function isMatch(clicked){
   const secondIcon = $(secondCard).find('i')[0]
 
   moves++;
+  localStorage.setItem('moves',moves);
   starsHandler();
   
   if (firstIcon.className == secondIcon.className){  
@@ -191,6 +243,13 @@ function isMatch(clicked){
     animationErrorTimeOut = setTimeout(function(){
       $(firstCard).toggleClass('animation-match');
       $(secondCard).toggleClass('animation-match');
+
+      let flipped = [];
+      $('.flip-container').each(function(){
+          flipped.push(this.className);
+      });
+      localStorage.setItem('flipped', flipped);
+
       $('.board').on('click', '.flip-container', clickSelectCard);
       $(document).on('keydown', keyDownCardsHandler);
     },1000);
@@ -225,12 +284,16 @@ function playAgain(){
 /** Function to initiate the stars **/
 function starsInit (){
 
-  moves = 0;
   const stars = $('.stars').find('i');
   stars.each(function (){
     $(this).removeClass('far');
     $(this).addClass('fas');
   });
+}
+
+function movesInit (){
+  moves = 0;
+  localStorage.setItem('moves', moves);
   $('.moves').text(`${moves}`);
 }
 
@@ -262,8 +325,10 @@ function reload(){
   clearTimeout(waitFlipTimeOut);
   //clear timer
   $('#timer').text('00:00');
+  localStorage.setItem('time', '00:00');
   clearTimeout(time)
   firstSelection=false;
+  movesInit();
 
   //adjust all cards classes so they comeback to hidden
   const cards = $(".board").find(".flip-container");
