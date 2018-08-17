@@ -9,7 +9,10 @@ const keyUp = 38;
 const keyRight = 39;
 const keyDown = 40;
 
-let moves;
+const displayTime = $('#timer');
+const displayMoves = $('.moves');
+const displayStars = $('.stars').find('i');
+
 let clickSelectCard;
 let keyDownCardsHandler;
 let animationErrorTimeOut;
@@ -17,7 +20,7 @@ let animationMatchTimeOut;
 let waitFlipTimeOut;
 let firstSelection;
 let startTime;
-let time;
+let timeIntervel;
 
 document.addEventListener("DOMContentLoaded", function(event) {
     console.log(localStorage);
@@ -98,8 +101,13 @@ function allocateImages (){
   //all icons
   const allIcons = ['fas fa-ambulance', 'fas fa-bus-alt', 'fab fa-accessible-icon', 'fas fa-frog', 'fas fa-chess-knight', 'fas fa-laptop-code', 'fas fa-smile-wink', 'fas fa-coffee', 'fas fa-user-secret', 'fas fa-bug', 'fas fa-volume-up', 'fas fa-hand-point-up', 'fas fa-kiwi-bird', 'fas fa-cut', 'fas fa-paperclip', 'fas fa-user-graduate', 'fas fa-hand-spock', 'fas fa-music', 'fas fa-microscope', 'fas fa-swimming-pool', 'fas fa-pencil-alt', 'fas fa-bicycle', 'fas fa-shopping-cart', 'fas fa-bed', 'fas fa-globe-americas', 'fas fa-umbrella-beach', 'fas fa-space-shuttle', 'fas fa-quidditch', 'fas fa-table-tennis', 'fas fa-sun', 'far fa-save', 'fas fa-couch'];
 
+  //reload time;
+  firstSelection = false;
+  
   if(localStorage.getItem('moves') == 0 || localStorage.getItem('moves') === null){
 
+    //initiate stars
+    starsInit();
     movesInit();
 
     let iconsList = [];
@@ -124,10 +132,8 @@ function allocateImages (){
     localStorage.setItem('icons', saveIcons);
   }
   else{
-
-    moves = localStorage.getItem('moves');
-    $('#timer').text(localStorage.getItem('time'));
-    $('.moves').text(moves);
+    displayTime.text(localStorage.getItem('time'));
+    displayMoves.text(localStorage.getItem('moves'));
     const restoredIcons = localStorage.getItem('icons').split(',');
     for (var i = 0; i < restoredIcons.length; i++) {
       $(icons[i]).removeClass();
@@ -145,13 +151,22 @@ function allocateImages (){
         $($(flipContainer[i]).find('.card-front')).toggleClass('match');
       }
     }
+
+    const moves = parseInt(localStorage.getItem('moves'));
+    if(moves > 13){
+      $(displayStars[2]).removeClass('fas');
+      $(displayStars[2]).addClass('far');
+    }
+    if (moves > 17){
+      $(displayStars[1]).removeClass('fas');
+      $(displayStars[1]).addClass('far');
+    }
+    if (moves > 21){
+      $(displayStars[0]).removeClass('fas');
+      $(displayStars[0]).addClass('far');
+    }
+
   }
-
-  //initiate stars
-  starsInit();
-
-  //reload time;
-  firstSelection = false;
 
   /** add listeners to the cards **/
   $('.board').on('click', '.flip-container', clickSelectCard);
@@ -197,24 +212,24 @@ function timer (){
   if(!firstSelection){
     firstSelection = true;
     startTime = $.now();
-    if(localStorage.getItem('moves') == 0 || localStorage.getItem('moves') === null){
-      time = setInterval(function() {
+    if(localStorage.getItem('moves') == 0){
+      timeIntervel = setInterval(function() {
         const diference = Math.floor((new Date - startTime) / 1000);
         const minutes = Math.floor(diference/60);
         const seconds = diference - (minutes*60);
         const timeString = ('0' + minutes).slice(-2) +':'+('0' + seconds).slice(-2);
         localStorage.setItem('time', timeString);
-        $('#timer').text(timeString);
+        displayTime.text(timeString);
       }, 1000);
     }else{
       const oldTime = localStorage.getItem('time').split(':');
-      time = setInterval(function() {
+      timeIntervel = setInterval(function() {
         const diference = Math.floor((new Date - startTime) / 1000) + parseInt(oldTime[0])*60 + parseInt(oldTime[1]);
         const minutes = Math.floor(diference/60);
         const seconds = diference - (minutes*60);
         const timeString = ('0' + minutes).slice(-2) +':'+('0' + seconds).slice(-2);
         localStorage.setItem('time', timeString);
-        $('#timer').text(timeString);
+        displayTime.text(timeString);
       }, 1000);
     }
     
@@ -229,8 +244,10 @@ function isMatch(clicked){
   const secondCard = clicked[1];
   const secondIcon = $(secondCard).find('i')[0]
 
-  moves++;
-  localStorage.setItem('moves',moves);
+  const moves = parseInt(localStorage.getItem('moves'))+1;
+  localStorage.setItem('moves', moves);
+  displayMoves.text(moves);
+
   starsHandler();
   
   if (firstIcon.className == secondIcon.className){  
@@ -243,15 +260,7 @@ function isMatch(clicked){
     animationErrorTimeOut = setTimeout(function(){
       $(firstCard).toggleClass('animation-match');
       $(secondCard).toggleClass('animation-match');
-
-      let flipped = [];
-      $('.flip-container').each(function(){
-          flipped.push(this.className);
-      });
-      localStorage.setItem('flipped', flipped);
-
-      $('.board').on('click', '.flip-container', clickSelectCard);
-      $(document).on('keydown', keyDownCardsHandler);
+      flippedToLocal();
     },1000);
   }else {
     //add error animation class
@@ -261,19 +270,29 @@ function isMatch(clicked){
     animationMatchTimeOut = setTimeout(function(){
       $(firstCard).toggleClass('flip animation-error');
       $(secondCard).toggleClass('flip animation-error');
-      $('.board').on('click', '.flip-container', clickSelectCard);
-      $(document).on('keydown', keyDownCardsHandler);
+      flippedToLocal();
     },1000);
   }
 }
 
+/** add the actual flipped cards to localstorage**/
+function flippedToLocal(){
+  let flipped = [];
+  $('.flip-container').each(function(){
+      flipped.push(this.className);
+  });
+  localStorage.setItem('flipped', flipped);
+  $('.board').on('click', '.flip-container', clickSelectCard);
+  $(document).on('keydown', keyDownCardsHandler);
+}
+
 /** Funtion to open the winner modal**/
 function victory(){
-  clearTimeout(time);
+  clearTimeout(timeIntervel);
   firstSelection=false;
   $('#winner').modal('show');
-  $('.congrats-moves').text(`With ${moves} Moves and ${$('.fa-star.fas').length} Stars.`);
-  $('.congrats-time').text('Time: ' + $('#timer').text());
+  $('.congrats-moves').text(`With ${localStorage.getItem('moves')} Moves and ${$('.fa-star.fas').length} Stars.`);
+  $('.congrats-time').text('Time: ' + displayTime.text());
 }
 
 function playAgain(){
@@ -284,31 +303,31 @@ function playAgain(){
 /** Function to initiate the stars **/
 function starsInit (){
 
-  const stars = $('.stars').find('i');
-  stars.each(function (){
+  displayStars.each(function (){
     $(this).removeClass('far');
     $(this).addClass('fas');
   });
 }
 
 function movesInit (){
-  moves = 0;
-  localStorage.setItem('moves', moves);
-  $('.moves').text(`${moves}`);
+  localStorage.setItem('moves', '0');
+  displayMoves.text('0');
 }
 
 /** Function to count the star points **/
 function starsHandler(){
 
-  $('.moves').text(`${moves}`);
-  const starsIcons = $('.stars').find('i');
-  switch (moves) {
+  const moves = parseInt(localStorage.getItem('moves'));
+  switch(moves) {
     case 14:
-      $(starsIcons[2]).toggleClass('fas far');
-      break;
+        $(displayStars[2]).toggleClass('fas far');
+        break;
     case 18:
-      $(starsIcons[1]).toggleClass('fas far');
-      break;
+        $(displayStars[1]).toggleClass('fas far');
+        break;
+    case 22:
+        $(displayStars[0]).toggleClass('fas far');
+        break;
   }
 }
 
@@ -324,9 +343,9 @@ function reload(){
   clearTimeout(animationErrorTimeOut);
   clearTimeout(waitFlipTimeOut);
   //clear timer
-  $('#timer').text('00:00');
+  displayTime.text('00:00');
   localStorage.setItem('time', '00:00');
-  clearTimeout(time)
+  clearTimeout(timeIntervel)
   firstSelection=false;
   movesInit();
 
