@@ -8,6 +8,9 @@ The game was developed with the possibility to play with the keyboard.
  * arrow UP, arrow LEFT, arrow DOWN and arrow RIGHT to move over the board
  * SPACE and ENTER can flip a card
  * ESC reload the game when board is displayed and close Victory modal when modal is displayed
+ 
+## try live
+[Matching Game](https://nybragaramos.github.io/matching-cards/)
 
 ## project tools
  * Bootstrap 4 https://getbootstrap.com/
